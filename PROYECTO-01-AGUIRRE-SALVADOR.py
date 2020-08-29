@@ -61,26 +61,36 @@ while (opcion != 'q'):
             print("2 - Rezagados (por categoria)")
             print("b - regresar")
             opcion = input("--> ")
+            """sales_code """
+            #generar listado  de los 50 productos con mayores ventas
+            lista_ventas = []
+            #lleno la lista con los pares que ya voy a utilizar
+            #formato [venta, reembolsos, productoId]
+            for indx in range(0, len(lifestore_products)):
+                lista_ventas.append([0, 0, indx + 1])
+            for compra in lifestore_sales:
+                #agrego valor, en compra 1 es id producto, 4 es reembolso
+                if (compra[4] == 1):  #reembolso
+                    lista_ventas[compra[1]][1] += 1
+                """"
+                if (compra[1] >= len(lista_ventas)):  #considero un orden con el id
+                    lista_ventas.append([1, compra[1]])
+                else:  #considero compras ordenadas por prod_id
+                    lista_ventas[compra[1]][0] += 1  #[cant +=1, id]
+                """
+                lista_ventas[compra[1]][0] += 1  #[cant +=1, id]
+            """sales_code """
+            #listado con los 100 productos con mayor búsquedas
+            lista_busquedas = []
+            #similarmente hago un acomodo primero tomando indice como id
+            for indx in range(0, len(lifestore_products)):
+                lista_busquedas.append([0, indx + 1])
+            for busqueda in lifestore_searches:
+                lista_busquedas[busqueda[1]][0] += 1
 
             if opcion == '1':
                 print("----------------------------------")
-                #generar listado  de los 50 productos con mayores ventas
-                lista_ventas = []
-                #lleno la lista con los pares que ya voy a utilizar
-                #formato [venta, reembolsos, productoId]
-                for indx in range(0, len(lifestore_products)):
-                    lista_ventas.append([0, 0, indx + 1])
-                for compra in lifestore_sales:
-                    #agrego valor, en compra 1 es id producto, 4 es reembolso
-                    if (compra[4] == 1):  #reembolso
-                        lista_ventas[compra[1]][1] += 1
-                    """"
-              if (compra[1] >= len(lista_ventas)):  #considero un orden con el id
-                  lista_ventas.append([1, compra[1]])
-              else:  #considero compras ordenadas por prod_id
-                  lista_ventas[compra[1]][0] += 1  #[cant +=1, id]
-              """
-                    lista_ventas[compra[1]][0] += 1  #[cant +=1, id]
+                """ here was sales_code """
                 #ordena segun el 1er elemento en arreglos dobles
                 lista_ventas.sort(reverse=True)
                 #print(lista_ventas)
@@ -111,14 +121,7 @@ while (opcion != 'q'):
                     if compras == 0: break
                 #print(total)
                 print("----------------------------------")
-
-                #listado con los 100 productos con mayor búsquedas
-                lista_busquedas = []
-                #similarmente hago un acomodo primero tomando indice como id
-                for indx in range(0, len(lifestore_products)):
-                    lista_busquedas.append([0, indx + 1])
-                for busqueda in lifestore_searches:
-                    lista_busquedas[busqueda[1]][0] += 1
+                """ here was search_code"""
                 #ahora si ordeno y uso el indice en 2da posicion, como en la vez anterior
                 lista_busquedas.sort(reverse=True)
                 #print(lista_busquedas)
