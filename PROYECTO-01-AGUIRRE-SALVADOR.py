@@ -64,12 +64,12 @@ while (opcion != 'q'):
             """sales_code """
             #generar listado  de los 50 productos con mayores ventas
             lista_ventas = []
-            #lleno la lista con los pares que ya voy a utilizar
+            #lleno la lista con los pares (tercias) que ya voy a utilizar
             #formato [venta, reembolsos, productoId]
             for indx in range(0, len(lifestore_products)):
                 lista_ventas.append([0, 0, indx + 1])
             for compra in lifestore_sales:
-                #agrego valor, en compra 1 es id producto, 4 es reembolso
+                #agrego valor. En compra 1 es id producto, 4 es reembolso
                 if (compra[4] == 1):  #reembolso
                     lista_ventas[compra[1]][1] += 1
                 """"
@@ -96,9 +96,11 @@ while (opcion != 'q'):
                 #print(lista_ventas)
                 print(">>>Los 50 productos mas vendidos: ")
                 #total = 0
+                #si se cambia el rango uso esto, en donde checo que el range() tenga 50 elementos exactos o la longitud de lifestore si no para evitar errores
                 maxRang = 51 if 50 <= len(lifestore_products) else len(
                     lifestore_products)
                 for num in range(1, maxRang):
+                    #num me sirve para listar, pero por empezar en 1 resto -1 con tal de acceder a los elementos correspondientes
                     productoId = lista_ventas[num - 1][2]
                     compras = lista_ventas[num - 1][0]
                     reembolsos = lista_ventas[num - 1][1]
@@ -125,10 +127,12 @@ while (opcion != 'q'):
                 #ahora si ordeno y uso el indice en 2da posicion, como en la vez anterior
                 lista_busquedas.sort(reverse=True)
                 #print(lista_busquedas)
+                #similarmente a arriba, para hacer la lsita
                 maxRang = 101 if 100 <= len(lifestore_products) else len(
                     lifestore_products)
                 print(">>>Los 100 productos mas buscados: ")
                 for num in range(1, maxRang):
+                    #similarmente a arriba uso los indices correctos
                     productoId = lista_busquedas[num - 1][1]
                     busquedas = lista_busquedas[num - 1][0]
                     name = lifestore_products[productoId - 1][1]
@@ -165,11 +169,13 @@ while (opcion != 'q'):
                 lista_ventas.sort()
                 for cat in categories:
                     print("Las(os) 50", cat, "menos vendidos(as).")
+                    #num es para listar el top
                     num = 1
                     for venta in lista_ventas:
                         if num > 50: break
                         #checo si no esta en la categoria el producto
                         prodId = venta[2]
+                        #como el id empieza en 1, resto con -1 para tener el elemento adecuado del arreglo
                         if lifestore_products[prodId - 1][3] != cat: continue
                         #ahora si imprimo elemento de la lista, 1 es name
                         name = lifestore_products[prodId - 1][1]
@@ -199,6 +205,7 @@ while (opcion != 'q'):
                         if num > 50: break
                         #checo si no esta en la categoria el producto
                         prodId = busqueda[1]
+                        #similarmente a arriba resto 1 para tener la pos adecuada del arreglo, ya que el id inicia en 1
                         if lifestore_products[prodId - 1][3] != cat: continue
                         #ahora si imprimo elemento de la lista, 1 es name
                         name = lifestore_products[prodId - 1][1]
@@ -235,6 +242,7 @@ while (opcion != 'q'):
             #if sale[4] == 1: continue
             calif = sale[2]
             prodId = sale[1]
+            #con id iniciando en 1, resto para tener elemento correcto del arreglo
             lista_resenias[prodId - 1][0] += calif
             lista_resenias[prodId - 1][1] += 1
         for res in lista_resenias:
@@ -246,6 +254,7 @@ while (opcion != 'q'):
         print(">>>Los", tamanio_lista, "productos con mejores reseñas: ")
         lista_resenias.sort(reverse=True)
         for num in range(1, tamanio_lista + 1):
+            #como explico arriba ajusto la pos correcta del arreglo ya que inicio en 1
             calif = lista_resenias[num - 1][0]
             prodId = lista_resenias[num - 1][2]
             nombre = lifestore_products[prodId - 1][1]
@@ -280,6 +289,7 @@ while (opcion != 'q'):
             if res[1] == 0: continue
             calif = res[0]
             prodId = res[2]
+            #ajusto id con pos de arreglo adecuado
             name = lifestore_products[prodId - 1][1]
             print(
                 num, '. (calificación: ', round(calif, 2), ') ', name, sep='')
@@ -295,29 +305,34 @@ while (opcion != 'q'):
         #Total de ingresos y ventas promedio mensuales, total anual y meses con más ventas al anio
         years = []
         for sale in lifestore_sales:
+            #obtengo el string de fecha y de ahi hago los ajustes
             datestring = sale[3]
             year = datestring[6:]
             #3 es la fecha, formato ejemplo: '24/07/2020'
             if not year in years:
                 years.append(year)
 
+        #como son en orden, hago esta lista pare evitar hacer if/else o ajustar la fech a mes despues
         meses = [
             'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio',
             'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
         ]
         for year in years:
+            #listas que usare, nombres en ing por ser mas cortos y preferencias
             months_sales = []
             months_refunds = []
             months_earnings = []
             for mes in meses:
-                #formato [venta/ganancias, mes]
+                #formato [venta/ganancias/reembolsos, mes]
                 months_sales.append([0, mes])
                 months_earnings.append([0, mes])
                 months_refunds.append([0, mes])
             totalIngresos = 0
             #years.append([year, 0, months_sales, months_earnings])
             for sale in lifestore_sales:
+                #string con la fecha
                 datestring = sale[3]
+                #separo del string los que ocupo como anio
                 yearstr = datestring[6:]
                 if yearstr != year: continue
                 #datos a usar
@@ -333,6 +348,7 @@ while (opcion != 'q'):
                     months_refunds[idxmonth][0] += 1
             print("***********************************")
             print("****** Reporte del año", year, "*******")
+            #para ir contando las ventas y las ganancias y luego promediarlas
             vetans_prommensuales = 0
             gains_prommensuales = 0
             for num in range(0, 12):
