@@ -69,16 +69,17 @@ while (opcion != 'q'):
             for indx in range(0, len(lifestore_products)):
                 lista_ventas.append([0, 0, indx + 1])
             for compra in lifestore_sales:
+                idProd = compra[1] - 1
                 #agrego valor. En compra 1 es id producto, 4 es reembolso
                 if (compra[4] == 1):  #reembolso
-                    lista_ventas[compra[1]][1] += 1
+                    lista_ventas[idProd][1] += 1
                 """"
                 if (compra[1] >= len(lista_ventas)):  #considero un orden con el id
                     lista_ventas.append([1, compra[1]])
                 else:  #considero compras ordenadas por prod_id
                     lista_ventas[compra[1]][0] += 1  #[cant +=1, id]
                 """
-                lista_ventas[compra[1]][0] += 1  #[cant +=1, id]
+                lista_ventas[idProd][0] += 1  #[cant +=1, id]
             """sales_code """
             #listado con los 100 productos con mayor búsquedas
             lista_busquedas = []
@@ -86,7 +87,7 @@ while (opcion != 'q'):
             for indx in range(0, len(lifestore_products)):
                 lista_busquedas.append([0, indx + 1])
             for busqueda in lifestore_searches:
-                lista_busquedas[busqueda[1]][0] += 1
+                lista_busquedas[busqueda[1] - 1][0] += 1
 
             if opcion == '1':
                 print("----------------------------------")
